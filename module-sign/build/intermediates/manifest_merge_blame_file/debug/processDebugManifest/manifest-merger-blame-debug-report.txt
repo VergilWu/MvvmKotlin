@@ -1,0 +1,31 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    xmlns:tools="http://schemas.android.com/tools"
+4    package="com.vergil.sign" >
+5
+6    <uses-sdk android:minSdkVersion="21" />
+7
+8    <application>
+8-->D:\Projects\Personal\Android\MvvmLazy-kotlin\module-sign\src\main\AndroidManifest.xml:4:5-14:19
+9        <provider
+9-->D:\Projects\Personal\Android\MvvmLazy-kotlin\module-sign\src\main\AndroidManifest.xml:5:9-13:20
+10            android:name="androidx.startup.InitializationProvider"
+10-->D:\Projects\Personal\Android\MvvmLazy-kotlin\module-sign\src\main\AndroidManifest.xml:7:13-67
+11            android:authorities="${applicationId}.androidx-startup"
+11-->D:\Projects\Personal\Android\MvvmLazy-kotlin\module-sign\src\main\AndroidManifest.xml:8:13-68
+12            android:exported="false"
+12-->D:\Projects\Personal\Android\MvvmLazy-kotlin\module-sign\src\main\AndroidManifest.xml:9:13-37
+13            tools:node="merge"
+13-->D:\Projects\Personal\Android\MvvmLazy-kotlin\module-sign\src\main\AndroidManifest.xml:10:13-31
+14            tools:replace="android:authorities" >
+14-->D:\Projects\Personal\Android\MvvmLazy-kotlin\module-sign\src\main\AndroidManifest.xml:6:13-48
+15            <meta-data
+15-->D:\Projects\Personal\Android\MvvmLazy-kotlin\module-sign\src\main\AndroidManifest.xml:11:13-12:52
+16                android:name="com.vergil.sign.SignModuleInit"
+16-->D:\Projects\Personal\Android\MvvmLazy-kotlin\module-sign\src\main\AndroidManifest.xml:11:25-70
+17                android:value="androidx.startup" />
+17-->D:\Projects\Personal\Android\MvvmLazy-kotlin\module-sign\src\main\AndroidManifest.xml:12:17-49
+18        </provider>
+19    </application>
+20
+21</manifest>

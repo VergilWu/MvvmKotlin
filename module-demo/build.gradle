@@ -1,0 +1,38 @@
+plugins {
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+apply from: "../module.build.gradle"
+android {
+
+    buildFeatures {
+        viewBinding true
+    }
+    defaultConfig {
+        //如果是独立模块，则使用当前组件的包名
+        if (isBuildModule.toBoolean()) {
+            applicationId "com.vergil.demo"
+        }
+    }
+    //统一资源前缀，规范资源引用
+    resourcePrefix "test_"
+    namespace 'com.vergil.demo'
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+}
+kapt {
+    arguments {
+        arg("AROUTER_MODULE_NAME", project.getName())
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.?ar'])
+    api project(':library-base')
+    //组件中依赖阿里路由编译框架
+    kapt rootProject.ext.dependencies["arouter-compiler"]
+    kapt rootProject.ext.android_x["room-compiler"]
+}

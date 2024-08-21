@@ -1,0 +1,114 @@
+plugins {
+    id 'com.android.application'
+    id("org.jetbrains.kotlin.android")
+    id 'kotlin-kapt'
+    id 'com.google.devtools.ksp'
+}
+android {
+    namespace 'com.vergil.myapp'
+    compileSdk rootProject.ext.android.compileSdkVersion
+    defaultConfig {
+        applicationId rootProject.ext.android.applicationId
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        multiDexEnabled true
+        ndk {
+//            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64', "mips"
+            abiFilters "armeabi-v7a", "arm64-v8a"
+        }
+    }
+    signingConfigs {
+        release {
+            storeFile file('./bxyun.jks')
+            storePassword '123456'
+            keyAlias = 'key0'
+            keyPassword '123456'
+        }
+        debug {
+            storeFile file('./bxyun.jks')
+            storePassword '123456'
+            keyAlias = 'key0'
+            keyPassword '123456'
+        }
+    }
+
+
+    buildTypes {
+        release {
+            debuggable false
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            versionNameSuffix "-release"
+            signingConfig signingConfigs.release
+        }
+        debug {
+            debuggable true
+            minifyEnabled false
+            versionNameSuffix = "-debug"
+            signingConfig signingConfigs.debug
+        }
+    }
+    android.applicationVariants.configureEach {
+        variant ->
+            variant.outputs.configureEach {
+                //在这里修改apk文件名，引号内的字符串都可以随便定义
+                outputFileName = "${variant.name}-${variant.versionName}.apk"
+            }
+    }
+    //统一资源前缀，规范资源引用
+    resourcePrefix "app_"
+    buildFeatures {
+        dataBinding = true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget =JavaVersion.VERSION_17
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+
+}
+
+kapt {
+    arguments {
+        arg("AROUTER_MODULE_NAME", project.getName())
+    }
+}
+dependencies {
+    implementation fileTree(include: ['*.?ar'], dir: 'libs')
+    kapt rootProject.ext.dependencies["arouter-compiler"]
+    //宿主项目中判断组件是否需要独立运行
+    if (isBuildModule.toBoolean()) {
+        //组件独立运行时，宿主项目直接依赖基础库，避免编译错误
+        implementation project(':library-base')
+    } else {
+        implementation project(':module-home')
+        implementation project(':module-sign')
+        implementation project(':module-demo')
+    }
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
+configurations.configureEach() {
+    Configuration configuration ->
+        configuration.resolutionStrategy.force(rootProject.ext.android_x.multidex)
+        configuration.resolutionStrategy.force(rootProject.ext.android_x["appcompat"])
+        configuration.resolutionStrategy.force(rootProject.ext.android_x["ktx"])
+        configuration.resolutionStrategy.force(rootProject.ext.android_x["material"])
+        configuration.resolutionStrategy.force(rootProject.ext.android_x["startup"])
+}

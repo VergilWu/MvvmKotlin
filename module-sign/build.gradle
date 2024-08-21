@@ -1,0 +1,32 @@
+plugins {
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+apply from: "../module.build.gradle"
+android {
+    defaultConfig {
+        //如果是独立模块，则使用当前组件的包名
+        if (isBuildModule.toBoolean()) {
+ c        }
+    }
+    //统一资源前缀，规范资源引用
+    resourcePrefix "sign_"
+    namespace 'com.vergil.sign'
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+}
+kapt {
+    arguments {
+        arg("AROUTER_MODULE_NAME", project.getName())
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.?ar'])
+    implementation 'com.github.WGwangguan:SeparatedEditText:v1.2'
+    api project(':library-base')
+    kapt rootProject.ext.dependencies["arouter-compiler"]
+}
